@@ -42,31 +42,30 @@ class OrangController extends Controller
 
     public function store(Request $request)
     {
-        // Mengambil nilai input 'data' dari request yang dikirimkan oleh pengguna
+
         $input = $request->input('data');
 
-        // Mencocokkan pola input dengan ekspresi reguler untuk memisahkan nama, usia, dan kota
+
         preg_match('/(?P<name>.*) (?P<age>\d+)(?: ?THN| ?TH| ?TAHUN)? (?P<city>.*)/', $input, $matches);
 
-        // Mengambil nilai nama, usia, dan kota dari hasil pencocokan pola
-        $name = strtoupper($matches['name']); // Mengubah nama menjadi huruf kapital
-        $age = $matches['age']; // Mengambil nilai usia
-        $city = strtoupper($matches['city']); // Mengubah kota menjadi huruf kapital
 
-        // Membuat objek baru dari model 'Orang' (asumsi ini adalah model yang digunakan untuk entitas orang)
+        $name = strtoupper($matches['name']);
+        $age = $matches['age'];
+        $city = strtoupper($matches['city']);
+
+
         $orang = new Orang();
 
-        // Menyimpan nilai nama, usia, dan kota ke dalam properti objek $orang
+
         $orang->name = $name;
         $orang->age = $age;
         $orang->city = $city;
 
-        // Menyimpan data ke dalam database menggunakan metode save() dari model 'Orang'
+
         $orang->save();
 
         // Mengembalikan pesan JSON yang menyatakan data berhasil disimpan
         return response()->json(['message' => 'Data saved successfully']);
-
     }
 
 
