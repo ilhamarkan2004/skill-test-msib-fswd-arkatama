@@ -48,7 +48,7 @@ class OrangController extends Controller
 
         $orang->save();
 
-        // Mengembalikan pesan JSON yang menyatakan data berhasil disimpan
+       
         return response()->json(['message' => 'Data saved successfully']);
     }
 
