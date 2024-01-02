@@ -42,33 +42,23 @@ class OrangController extends Controller
 
     public function store(Request $request)
     {
-        $input = $request->input('data'); // Mendapatkan data dari form
-        $exploded = explode(' ', $input); // Membagi data menjadi array berdasarkan spasi
+        $input = $request->input('data');
 
-        // Mengambil nama dari elemen pertama
-        $name = strtoupper($exploded[0]); // Nama diubah menjadi huruf kapital
+        preg_match('/(?P<name>.*) (?P<age>\d+)(?: ?THN| ?TH| ?TAHUN)? (?P<city>.*)/', $input, $matches);
 
-        // Menggabungkan elemen kecuali yang mungkin berisi usia untuk membentuk kota
-        $cityArr = array_slice($exploded, 1);
-        $possibleAge = $this->extractAge($input);
-        if ($possibleAge !== null) {
-            $cityArr = array_diff($cityArr, [$possibleAge]); // Menghapus usia dari elemen kota
-        }
-        $city = strtoupper(implode(' ', $cityArr)); // Kota diubah menjadi huruf kapital
-
+        $name = strtoupper($matches['name']);
+        $age = $matches['age'];
+        $city = strtoupper($matches['city']);
         // Menyimpan ke dalam database
         $orang = new Orang();
         $orang->name = $name;
-        $orang->age = $possibleAge; // Mengambil usia dari input
+        $orang->age = $age; // Mengambil usia dari input
         $orang->city = $city;
 
         // Menyimpan jika usia tidak null
-        if ($orang->age !== null) {
-            $orang->save();
-            return response()->json(['message' => 'Data saved successfully']);
-        }
 
-        return response()->json(['message' => 'Failed to save data: Invalid age']);
+        $orang->save();
+        return response()->json(['message' => 'Data saved successfully']);
     }
 
 
