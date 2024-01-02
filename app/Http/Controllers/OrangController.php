@@ -23,23 +23,7 @@ class OrangController extends Controller
     {
         //
     }
-    private function extractAge($input)
-    {
-        $inputArr = explode(' ', $input); // Membagi input menjadi array berdasarkan spasi
-
-        // Mencari usia yang mungkin muncul di awal atau tengah string
-        $possibleAge = array_filter($inputArr, function ($item) {
-            return preg_match('/^\d+(?:THN|TAHUN|TH)?$/i', $item); // Pola untuk memeriksa apakah elemen hanya berisi usia
-        });
-
-        // Mengambil angka yang sesuai jika ditemukan
-        if (!empty($possibleAge)) {
-            return reset($possibleAge);
-        }
-
-        return null; // Mengembalikan null jika tidak ada pola yang cocok
-    }
-
+   
     public function store(Request $request)
     {
 
